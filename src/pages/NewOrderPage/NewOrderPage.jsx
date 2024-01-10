@@ -66,7 +66,7 @@ export default function NewOrderPage({ user, setUser }) {
         <UserLogOut user={user} setUser={setUser} />
       </aside>
       <MenuList
-        menuItems={menuItems.filter(item => item.category.name === activeCat)}
+        menuItems={menuItems.filter((item) => item.category.name === activeCat)}
         handleAddToOrder={handleAddToOrder}
       />
       <OrderDetail

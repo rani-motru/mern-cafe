@@ -1,7 +1,7 @@
-import { Component } from "react";
+import React,{ Component } from "react";
 import { signUp } from '../../utilities/users-services';
 
-export default class SignUpForm extends Component {
+export  class SignUpForm extends Component {
 state = {
   name: '',
   email: '',
@@ -10,30 +10,36 @@ state = {
   error: ''
 };
 
-handleChange = (evt) => {
-  this.setState({
-    [evt.target.name]: evt.target.value,
-    error: ''
-  });
-};
+    // The object passed to setState is merged with the current state object
+    handleChange = (evt) => {
+        this.setState({
+            [evt.target.name]: evt.target.value,
+            error: ''
+        });
+    };
+        
+    handleSubmit = async (evt) => {
+        evt.preventDefault();
+        // alert(JSON.stringify(this.state));
+        try {
+            // We don't want to send the 'error' or 'confirm' property,
+            // so let's make a copy of the state object, then delete them
+            const formData = { ...this.state} // makes a copy of the state variable
+            delete formData.error;
+            delete formData.confirm;
+            // The promise returned by the signUp service method
+            // will resolve to the uder object included in the 
+            // payload of the JSON Web Token (JWT)
+            const user = await signUp(formData);
+            // Baby Step!
+            // console.log(user);
+            this.props.setUser(user);
 
-handleSubmit = async (evt) => {
-  evt.preventDefault();
-  try {
-    const formData = {...this.state};
-    delete formData.confirm;
-    delete formData.error;
-    // The promise returned by the signUp service method
-    // will resolve to the user object included in the
-    // payload of the JSON Web Token (JWT)
-    const user = await signUp(formData);
-    // Baby step
-    this.props.setUser(user);
-  } catch {
-    // An error happened on the server
-    this.setState({ error: 'Sign Up Failed - Try Again' });
-  }
-};
+        } catch {
+            // An error occured
+            this.setState({error: 'Sign Up Failed - Try Again'});
+        }
+    }
 
 // We must override the render method
 // The render method is the equivalent to a function-based component
@@ -60,3 +66,4 @@ render() {
   );
 }
 }
+export default SignUpForm;

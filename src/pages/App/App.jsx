@@ -1,5 +1,5 @@
 // import dependencies
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // import my functionality that I've added
@@ -9,7 +9,7 @@ import { getUser } from '../../utilities/users-services';
 // import './App.css'
 import styles from './App.module.css';
 // import pages
-import AuthPage from '../Authpage/AuthPage';
+import AuthPage from '../AuthPage/AuthPage';
 import NewOrderPage from '../NewOrderPage/NewOrderPage';
 import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 
@@ -27,21 +27,21 @@ function App() {
     <main className={styles.App}>
       {
         user
-          ?
+          ? (
           <>
             <NavBar user={user} setUser={setUser}/>
             < Routes >
-              <Route path='/orders/new' element={<NewOrderPage />}/>
-              <Route path='/orders' element={<OrderHistoryPage />}/>
+              <Route path='/orders/new' element={<NewOrderPage user={user} setUser={setUser} />}/>
+              <Route path='/orders' element={<OrderHistoryPage user={user} setUser={setUser} />}/>
                {/* redirect to /orders/new if path in address bar hasn't matched a <Route> above */}
               <Route path="/*" element={<Navigate to="/orders/new" />} />
             </Routes>
           </>
-          :
+         ) : (
           < AuthPage setUser={setUser} />
-      }
+      )}
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
