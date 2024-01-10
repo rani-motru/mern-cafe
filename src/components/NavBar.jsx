@@ -12,7 +12,7 @@ function NavBar(props) {
   }
 
   return (
-    <nav>
+    <nav> 
         <Link to='/orders'>Order History</Link>
         &nbsp; | &nbsp;
         <Link to='/orders/new'>New Orders</Link>
